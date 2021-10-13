@@ -1,4 +1,0 @@
-jtype: SpellChecker
-metas:
-  py_modules:
-    - executor.py
