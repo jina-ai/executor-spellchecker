@@ -1,6 +1,6 @@
 # SpellChecker
 
-A simple spelling corrector that generates candidates on misspelled words and leverages a language model for ranking candidates. To speed up the candidate generation process, a [BKTree](https://en.wikipedia.org/wiki/BK-tree)  is used to search in the space of possible words K edit distance computations away from a misspelled word.
+A simple spelling corrector that generates candidates on mispelled words and leverages a language model for ranking candidates. To speed up the candidate generation process, a [BKTree](https://en.wikipedia.org/wiki/BK-tree)  is used to search in the space of possible words K edit distance computations away from a mispelled word.
 
 ## Basic usage
 
@@ -21,6 +21,12 @@ with Flow().add(uses=SpellChecker) as f:
 
 ```
 
+Check the [trainer](https://github.com/jina-ai/executor-spellchecker/blob/main/spellchecker/pyngramspell/pyngramspell.py) for information on what parameters it supports. These can be passed with 
+
+```python
+    f.post(on='/train', inputs=train_docs, parameters={'param1': value, ...})
+```
+
 Then the spelling of your text Documents can be fixed as follows:
 
 ```python
@@ -33,5 +39,4 @@ print(results[0].docs)  # documents can be found here
 
 ```
 
-Note that calling the `/train` again will delete the existing model and replace it with the new model it train.
-
+Note that calling the `/train` again will delete the existing model and replace it with the new one it trains.

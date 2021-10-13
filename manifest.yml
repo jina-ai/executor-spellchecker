@@ -1,0 +1,5 @@
+manifest_version: 1
+name: SpellChecker
+url: https://github.com/jina-ai/executor-spellchecker
+description: BKTree-based spell checker
+keywords: [text, crafter, spelling, correction, btree, NLP]
