@@ -59,17 +59,24 @@ class SpellChecker(Executor):
         :param parameters: are passed as **kwargs to PyNgramSpell model
         """
         self.model = PyNgramSpell(**parameters)
-        input_training_data = [d.content for d in docs]
-        self.model.fit(input_training_data)
+        self.model.fit(docs.get_attributes('text'))
         self.model.save(self.model_path)
 
     @requests(on=['/index', '/search', '/update', '/delete'])
     def spell_check(self, docs: DocumentArray, parameters: Dict = {}, **kwargs):
         """
         Processes the text Documents
+
+        :param docs: the DocumentArray we want to process
+        :param parameters: dictionary for parameters. Supports 'traversal_paths'
         """
+        if self.model is None:
+            self.logger.warning('the spell checker has not be trained. '
+                                'No task is performed. Use /train')
+            return
+
         for d in docs.traverse_flat(
             parameters.get('traversal_paths', self.traversal_paths)
         ):
-            if isinstance(d.content, str):
-                d.content = self.model.transform(d.content)
+            if d.text and isinstance(d.text, str):
+                d.content = self.model.transform(d.text)

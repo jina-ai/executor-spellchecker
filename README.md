@@ -27,6 +27,8 @@ Check the [trainer](https://github.com/jina-ai/executor-spellchecker/blob/main/s
     f.post(on='/train', inputs=train_docs, parameters={'param1': value, ...})
 ```
 
+If the parameters are not recognized by the trainer they will be ignored.
+
 Then the spelling of your text Documents can be fixed as follows:
 
 ```python
