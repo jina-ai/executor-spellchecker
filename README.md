@@ -21,6 +21,14 @@ with Flow().add(uses=SpellChecker) as f:
 
 ```
 
+Check the [trainer](https://github.com/jina-ai/executor-spellchecker/blob/main/spellchecker/pyngramspell/pyngramspell.py) for information on what parameters it supports. These can be passed with 
+
+```python
+    f.post(on='/train', inputs=train_docs, parameters={'param1': value, ...})
+```
+
+If the parameters are not recognized by the trainer they will be ignored.
+
 Then the spelling of your text Documents can be fixed as follows:
 
 ```python
@@ -33,5 +41,4 @@ print(results[0].docs)  # documents can be found here
 
 ```
 
-Note that calling the `/train` again will delete the existing model and replace it with the new model it train.
-
+Note that calling the `/train` again will delete the existing model and replace it with the new one it trains.
