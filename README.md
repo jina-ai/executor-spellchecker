@@ -1,6 +1,6 @@
 # SpellChecker
 
-A simple spelling corrector that generates candidates on mispelled words and leverages a language model for ranking candidates. To speed up the candidate generation process, a [BKTree](https://en.wikipedia.org/wiki/BK-tree)  is used to search in the space of possible words K edit distance computations away from a mispelled word.
+A simple spelling corrector that generates candidates on misspelled words and leverages a language model for ranking candidates. To speed up the candidate generation process, a [BKTree](https://en.wikipedia.org/wiki/BK-tree)  is used to search in the space of possible words K edit distance computations away from a misspelled word.
 
 ## Basic usage
 
