@@ -24,7 +24,7 @@ class SpellChecker(Executor):
     def __init__(
         self,
         model_path: str = os.path.join(cur_dir, 'model.pickle'),
-        traversal_paths: Iterable = ('r',),
+        traversal_paths: str = 'r',
         *args,
         **kwargs,
     ):
