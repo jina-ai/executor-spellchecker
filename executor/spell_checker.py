@@ -9,6 +9,8 @@ from jina import DocumentArray, Executor, requests
 from jina.logging.logger import JinaLogger
 from .pyngramspell import PyNgramSpell
 
+from warnings import warn
+
 cur_dir = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -24,16 +26,19 @@ class SpellChecker(Executor):
     def __init__(
         self,
         model_path: str = os.path.join(cur_dir, 'model.pickle'),
-        traversal_paths: Iterable = ('r',),
+        access_paths: Iterable = ('r',),
         *args,
         **kwargs,
     ):
         """
         :param model_path: the path where the model will be saved
-        :param traversal_paths: the path to traverse docs when processed
+        :param access_paths: the path to traverse docs when processed
         """
+        if("traversal_paths" in kwargs.keys()):
+            warn("'traversal_paths' is deprecated, please use 'access_paths'.",DeprecationWarning,stacklevel=2)
+
         super().__init__(*args, **kwargs)
-        self.traversal_paths = traversal_paths
+        self.access_paths = access_paths
         self.logger = JinaLogger(self.metas.name)
 
         self.model_path = model_path
@@ -68,7 +73,7 @@ class SpellChecker(Executor):
         Processes the text Documents
 
         :param docs: the DocumentArray we want to process
-        :param parameters: dictionary for parameters. Supports 'traversal_paths'
+        :param parameters: dictionary for parameters. Supports 'access_paths'
         """
         if self.model is None:
             self.logger.warning('the spell checker has not be trained. '
@@ -76,7 +81,7 @@ class SpellChecker(Executor):
             return
 
         for d in docs.traverse_flat(
-            parameters.get('traversal_paths', self.traversal_paths)
+            parameters.get('access_paths', self.access_paths)
         ):
             if d.text and isinstance(d.text, str):
                 d.content = self.model.transform(d.text)
