@@ -3,7 +3,7 @@ __license__ = "Apache-2.0"
 
 import os
 import pickle
-from typing import Dict, Iterable
+from typing import Dict, Iterable, Optional
 
 from jina import DocumentArray, Executor, requests
 from jina.logging.logger import JinaLogger
@@ -27,18 +27,26 @@ class SpellChecker(Executor):
         self,
         model_path: str = os.path.join(cur_dir, 'model.pickle'),
         access_paths: Iterable = ('r',),
+        traversal_paths: Optional[Iterable] = None,
         *args,
         **kwargs,
     ):
         """
         :param model_path: the path where the model will be saved
         :param access_paths: the path to traverse docs when processed
+        :param traversal_paths: please use access_paths
         """
-        if("traversal_paths" in kwargs.keys()):
-            warn("'traversal_paths' is deprecated, please use 'access_paths'.",DeprecationWarning,stacklevel=2)
 
         super().__init__(*args, **kwargs)
-        self.access_paths = access_paths
+
+        if traversal_paths is not None:
+            self.access_paths = traversal_paths
+            warn("'traversal_paths' will be deprecated in the future, please use 'access_paths'.",
+                 DeprecationWarning,
+                 stacklevel=2)
+        else:
+            self.access_paths = access_paths
+
         self.logger = JinaLogger(self.metas.name)
 
         self.model_path = model_path
