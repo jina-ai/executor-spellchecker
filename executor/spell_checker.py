@@ -72,7 +72,7 @@ class SpellChecker(Executor):
         :param parameters: are passed as **kwargs to PyNgramSpell model
         """
         self.model = PyNgramSpell(**parameters)
-        self.model.fit(docs.get_attributes('text'))
+        self.model.fit(docs.texts)
         self.model.save(self.model_path)
 
     @requests(on=['/index', '/search', '/update', '/delete'])
