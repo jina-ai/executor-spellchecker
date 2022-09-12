@@ -20,5 +20,5 @@ def test_spell_check_integration(incorrect_text, correct_text, input_training_da
         results = f.post(on='/index', inputs=input_docs, return_results=True)
 
         assert len(input_docs) == len(incorrect_text)
-        for crafted_doc, expected in zip(result, correct_text):
+        for crafted_doc, expected in zip(results, correct_text):
             assert crafted_doc.content == expected
