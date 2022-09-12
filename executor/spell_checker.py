@@ -26,8 +26,8 @@ class SpellChecker(Executor):
     def __init__(
         self,
         model_path: str = os.path.join(cur_dir, 'model.pickle'),
-        access_paths: Iterable = ('r',),
-        traversal_paths: Optional[Iterable] = None,
+        access_paths: str = '@r',
+        traversal_paths: Optional[str] = None,
         *args,
         **kwargs,
     ):
@@ -88,8 +88,16 @@ class SpellChecker(Executor):
                                 'No task is performed. Use /train')
             return
 
-        for d in docs.traverse_flat(
-            parameters.get('access_paths', self.access_paths)
-        ):
-            if d.text and isinstance(d.text, str):
+        access_paths = parameters.get('traversal_paths', None)
+        if access_paths is not None:
+            import warnings
+            warnings.warn(
+                f'`traversal_paths` is renamed to `access_paths` with the same usage, please use the latter instead. '
+                f'`traversal_paths` will be removed soon.',
+                DeprecationWarning,
+            )
+            parameters['access_paths'] = access_paths
+
+        for d in docs[parameters.get("access_paths", self.access_paths)]:
+            if d.text:
                 d.content = self.model.transform(d.text)
